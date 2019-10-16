@@ -126,12 +126,17 @@ getchisel() {
 
 installamass() {
   checkfile "/usr/local/bin/amass"
-  amass_version=3.1.10
-  amass_file="amass_v${amass_version}_linux_amd64.zip"
-  wget https://github.com/OWASP/Amass/releases/download/v$amass_version/$amass_file -O /tmp/$amass_file
-  cd /tmp && unzip -u $amass_file
-  mv /tmp/amass_v*/amass /usr/local/bin
-  rm -rf amass*
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] installing amass${NC}"
+    amass_version=3.1.10
+    amass_file="amass_v${amass_version}_linux_amd64.zip"
+    wget https://github.com/OWASP/Amass/releases/download/v$amass_version/$amass_file -O /tmp/$amass_file
+    cd /tmp && unzip -u $amass_file
+    mv /tmp/amass_v*/amass /usr/local/bin
+    rm -rf amass*
+  else
+    echo -e "${LIGHT_BLUE}[.] amass already installed, skipping${NC}"
+  fi
 }
 
 installaquatone() {
