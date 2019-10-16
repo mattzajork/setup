@@ -186,7 +186,7 @@ installshell() {
 }
 
 cherrytreeconfig() {
-  ct_dir=/root.config/cherrytree
+  ct_dir=/root/.config/cherrytree
   checkdirectory "$ct_dir"
   if [[ $? == 0 ]]; then
     echo -e "${GREEN}[+] creating directory $ct_dir ${NC}"
