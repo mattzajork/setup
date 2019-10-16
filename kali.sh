@@ -192,7 +192,6 @@ cherrytreeconfig() {
     echo -e "${GREEN}[+] creating directory $ct_dir ${NC}"
     mkdir -p $ct_dir
   fi
-  mv /root/.config/cherrytree/config.cfg /root/.config/cherrytree/config.cfg.bak
   cp $DIR/files/cherrytree/config.cfg /root/.config/cherrytree/config.cfg
 }
 
