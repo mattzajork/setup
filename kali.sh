@@ -154,6 +154,35 @@ installaquatone() {
   fi
 }
 
+installwinnc() {
+  checkdirectory "/opt/netcat-win"
+  netcat_win_file=netcat-win32-1.12.zip
+  if [[ $? == 0 ]]; then
+    mkdir -p /opt/netcat-win
+  fi
+  checkfile "/opt/netcat-win/nc64.exe"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] installing win netcat${NC}"
+    wget https://eternallybored.org/misc/netcat/$netcat_win_file -O /opt/netcat-win/$netcat_win_file
+    cd /opt/netcat-win && unzip $netcat_win_file
+    rm /opt/netcat-win/$netcat_win_file
+  else
+    echo -e "${LIGHT_BLUE}[=] win netcat already installed, skipping${NC}"
+  fi
+}
+
+installshell() {
+  checkdirectory "/opt/..."
+  if [[ $? == 0 ]]; then
+  fi
+  checkfile "/bin/bash"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] installing ...${NC}"
+  else
+    echo -e "${LIGHT_BLUE}[=] ... already installed, skipping${NC}"
+  fi
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
@@ -161,5 +190,6 @@ installdirsearch
 installprotonvpn
 installaquatone
 installamass
-installgithubrepos
 getchisel
+installwinnc
+installgithubrepos
