@@ -33,7 +33,7 @@ installdotfiles() {
     git clone https://github.com/mattzajork/dotfiles.git /root/.dotfiles
     cd /root/.dotfiles && ./install
   else
-    echo -e "${LIGHT_BLUE}[.] dotfiles already installed, skipping${NC}"
+    echo -e "${LIGHT_BLUE}[=] dotfiles already installed, skipping${NC}"
   fi
 }
 
@@ -48,7 +48,7 @@ installdirsearch() {
 EOF
     chmod +x /usr/local/bin/dirsearch
   else
-    echo -e "${LIGHT_BLUE}[.] dirsearch already installed, skipping${NC}"
+    echo -e "${LIGHT_BLUE}[=] dirsearch already installed, skipping${NC}"
   fi
 }
 
@@ -61,7 +61,7 @@ installprotonvpn() {
     /tmp/protonvpn-cli.sh --install
     rm /tmp/protonvpn-cli.sh
   else
-    echo -e "${LIGHT_BLUE}[.] protonvpn already installed, skipping${NC}"
+    echo -e "${LIGHT_BLUE}[=] protonvpn already installed, skipping${NC}"
   fi
 }
 
@@ -135,7 +135,7 @@ installamass() {
     mv /tmp/amass_v*/amass /usr/local/bin
     rm -rf amass*
   else
-    echo -e "${LIGHT_BLUE}[.] amass already installed, skipping${NC}"
+    echo -e "${LIGHT_BLUE}[=] amass already installed, skipping${NC}"
   fi
 }
 
@@ -150,7 +150,7 @@ installaquatone() {
     mv /tmp/aquatone /usr/local/bin
     rm -rf /tmp/aquatone* /tmp/README.md /tmp/LICENSE.txt
   else
-    echo -e "${LIGHT_BLUE}[.] aquatone already installed, skipping${NC}"
+    echo -e "${LIGHT_BLUE}[=] aquatone already installed, skipping${NC}"
   fi
 }
 
