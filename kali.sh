@@ -186,6 +186,12 @@ installshell() {
 }
 
 cherrytreeconfig() {
+  ct_dir=/root.config/cherrytree
+  checkdirectory "$ct_dir"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] creating directory $ct_dir ${NC}"
+    mkdir -p $ct_dir
+  fi
   mv /root/.config/cherrytree/config.cfg /root/.config/cherrytree/config.cfg.bak
   cp $DIR/files/cherrytree/config.cfg /root/.config/cherrytree/config.cfg
 }
