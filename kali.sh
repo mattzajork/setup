@@ -4,6 +4,7 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 NC='\033[0m'
 RED='\033[0;31m'
 GREEN='\033[1;32m'
@@ -183,6 +184,11 @@ installshell() {
   fi
 }
 
+cherrytreeconfig() {
+  mv /root/.config/cherrytree/config.cfg /root/.config/cherrytree/config.cfg.bak
+  cp $DIR/files/cherrytree/config.cfg /root/.config/cherrytree/config.cfg
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
@@ -193,3 +199,4 @@ installamass
 getchisel
 installwinnc
 installgithubrepos
+cherrytreeconfig
