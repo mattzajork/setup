@@ -175,6 +175,7 @@ installwinnc() {
 installshell() {
   checkdirectory "/opt/..."
   if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] creating directory ...${NC}"
   fi
   checkfile "/bin/bash"
   if [[ $? == 0 ]]; then
