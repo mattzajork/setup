@@ -78,6 +78,7 @@ installgithubrepos() {
     'flozz/p0wny-shell'
     'maurosoria/dirsearch'
     'pwntester/ysoserial.net'
+    'rebootuser/LinEnum'
     'samratashok/nishang'
     'sensepost/reGeorg'
     'swisskyrepo/PayloadsAllTheThings'
@@ -99,7 +100,7 @@ installgithubrepos() {
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
   apt install -y clamav dialog hping3 ipcalc macchanger p7zip python-pip python3-pip silversearcher-ag \
-    strace tree vim vlc xclip xfonts-terminus rlwrap
+    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra
 }
 
 removeunusedpackages() {
@@ -172,6 +173,16 @@ installwinnc() {
   fi
 }
 
+cherrytreeconfig() {
+  ct_dir=/root/.config/cherrytree
+  checkdirectory "$ct_dir"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] creating directory $ct_dir ${NC}"
+    mkdir -p $ct_dir
+  fi
+  cp $DIR/files/cherrytree/config.cfg /root/.config/cherrytree/config.cfg
+}
+
 installshell() {
   checkdirectory "/opt/..."
   if [[ $? == 0 ]]; then
@@ -185,14 +196,30 @@ installshell() {
   fi
 }
 
-cherrytreeconfig() {
-  ct_dir=/root/.config/cherrytree
-  checkdirectory "$ct_dir"
+installghidra() {
+  dir=/opt/ghidra
+  checkdirectory "$dir"
   if [[ $? == 0 ]]; then
-    echo -e "${GREEN}[+] creating directory $ct_dir ${NC}"
-    mkdir -p $ct_dir
+    echo -e "${GREEN}[+] creating directory $dir${NC}"
   fi
-  cp $DIR/files/cherrytree/config.cfg /root/.config/cherrytree/config.cfg
+  checkfile "/opt/ghidra/ghidraRun"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] installing ghidra${NC}"
+    wget https://ghidra-sre.org/ghidra_9.1-BETA_DEV_20190923.zip -O /opt/ghidra.zip
+  else
+    echo -e "${LIGHT_BLUE}[=] ghidra already installed, skipping${NC}"
+  fi
+}
+
+downloadida() {
+  checkfile "/root/idafree70_linux.run"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] downloading ida${NC}"
+    wget https://out7.hex-rays.com/files/idafree70_linux.run  -O ~/root/Downloads/idafree70_linux.run
+    echo -e "${BLUE}[!] run ida installer manually${NC}"
+  else
+    echo -e "${LIGHT_BLUE}[=] ida already downloaded, skipping${NC}"
+  fi
 }
 
 removeunusedpackages
