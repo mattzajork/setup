@@ -43,9 +43,9 @@ installdirsearch() {
   if [[ $? == 0 ]]; then
     echo -e "${GREEN}[+] installing dirsearch${NC}"
     cat > /usr/local/bin/dirsearch <<EOF
-    #!/bin/bash
-    cd /opt/dirsearch
-    python3 dirsearch.py $@
+#!/bin/bash
+cd /opt/dirsearch
+python3 dirsearch.py \$@
 EOF
     chmod +x /usr/local/bin/dirsearch
   else
