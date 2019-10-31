@@ -100,7 +100,7 @@ installgithubrepos() {
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
   apt install -y clamav dialog hping3 ipcalc macchanger p7zip python-pip python3-pip silversearcher-ag \
-    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra
+    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra gdb edb-debugger
 }
 
 removeunusedpackages() {
