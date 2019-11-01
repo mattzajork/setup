@@ -82,6 +82,7 @@ installgithubrepos() {
     'samratashok/nishang'
     'sensepost/reGeorg'
     'swisskyrepo/PayloadsAllTheThings'
+    'bitsadmin/wesng'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
@@ -100,7 +101,7 @@ installgithubrepos() {
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
   apt install -y clamav dialog hping3 ipcalc macchanger p7zip python-pip python3-pip silversearcher-ag \
-    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra gdb edb-debugger
+    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra gdb edb-debugger gdbserver
 }
 
 removeunusedpackages() {
@@ -222,6 +223,11 @@ downloadida() {
   fi
 }
 
+installpythonpackages() {
+  echo -e "${GREEN}[+] installing python packages${NC}"
+  pip3 install pwntools
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
@@ -232,4 +238,5 @@ installamass
 getchisel
 installwinnc
 installgithubrepos
+installpythonpackages
 cherrytreeconfig
