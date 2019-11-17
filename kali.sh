@@ -219,14 +219,14 @@ getpspy() {
     echo -e "${GREEN}[+] downloading pspy64${NC}"
     wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O /opt/pspy64
   else
-    echo -e "${blue}[=] pspy64 already downloaded${NC}"
+    echo -e "${LIGHT_BLUE}[=] pspy64 already downloaded${NC}"
   fi
   checkfile "/opt/pspy32"
   if [[ $? == 0 ]]; then
     echo -e "${GREEN}[+] downloading pspy64${NC}"
     wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O /opt/pspy32
   else
-    echo -e "${blue}[=] pspy64 already downloaded${NC}"
+    echo -e "${LIGHT_BLUE}[=] pspy32 already downloaded${NC}"
   fi
 }
 
