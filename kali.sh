@@ -73,16 +73,18 @@ installgithubrepos() {
     'Greenwolf/social_mapper'
     'Hackplayers/evil-winrm'
     'PowerShellMafia/PowerSploit'
+    'SecWiki/windows-kernel-exploits'
     'SecureAuthCorp/impacket'
+    'bitsadmin/wesng'
     'danielmiessler/SecLists'
     'flozz/p0wny-shell'
     'maurosoria/dirsearch'
     'pwntester/ysoserial.net'
+    'rasta-mouse/Sherlock'
     'rebootuser/LinEnum'
     'samratashok/nishang'
     'sensepost/reGeorg'
     'swisskyrepo/PayloadsAllTheThings'
-    'bitsadmin/wesng'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
@@ -101,7 +103,7 @@ installgithubrepos() {
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
   apt install -y clamav dialog hping3 ipcalc macchanger p7zip python-pip python3-pip silversearcher-ag \
-    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra gdb edb-debugger gdbserver
+    strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra gdb edb-debugger gdbserver jython
 }
 
 removeunusedpackages() {
@@ -174,29 +176,6 @@ installwinnc() {
   fi
 }
 
-cherrytreeconfig() {
-  ct_dir=/root/.config/cherrytree
-  checkdirectory "$ct_dir"
-  if [[ $? == 0 ]]; then
-    echo -e "${GREEN}[+] creating directory $ct_dir ${NC}"
-    mkdir -p $ct_dir
-  fi
-  cp $DIR/files/cherrytree/config.cfg /root/.config/cherrytree/config.cfg
-}
-
-installshell() {
-  checkdirectory "/opt/..."
-  if [[ $? == 0 ]]; then
-    echo -e "${GREEN}[+] creating directory ...${NC}"
-  fi
-  checkfile "/bin/bash"
-  if [[ $? == 0 ]]; then
-    echo -e "${GREEN}[+] installing ...${NC}"
-  else
-    echo -e "${LIGHT_BLUE}[=] ... already installed, skipping${NC}"
-  fi
-}
-
 installghidra() {
   dir=/opt/ghidra
   checkdirectory "$dir"
@@ -228,6 +207,42 @@ installpythonpackages() {
   pip3 install pwntools
 }
 
+getpspy() {
+  dir=/opt/pspy
+  checkdirectory "$dir"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] creating directory $dir${NC}"
+    mkdir "$dir"
+  fi
+  checkfile "/opt/pspy64"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] downloading pspy64${NC}"
+    wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64 -O /opt/pspy64
+  else
+    echo -e "${blue}[=] pspy64 already downloaded${NC}"
+  fi
+  checkfile "/opt/pspy32"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] downloading pspy64${NC}"
+    wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy32 -O /opt/pspy32
+  else
+    echo -e "${blue}[=] pspy64 already downloaded${NC}"
+  fi
+}
+
+installshell() {
+  checkdirectory "/opt/..."
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] creating directory ...${NC}"
+  fi
+  checkfile "/bin/bash"
+  if [[ $? == 0 ]]; then
+    echo -e "${GREEN}[+] installing ...${NC}"
+  else
+    echo -e "${LIGHT_BLUE}[=] ... already installed, skipping${NC}"
+  fi
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
@@ -236,7 +251,7 @@ installprotonvpn
 installaquatone
 installamass
 getchisel
+getpspy
 installwinnc
 installgithubrepos
 installpythonpackages
-cherrytreeconfig
