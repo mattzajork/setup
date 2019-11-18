@@ -73,6 +73,7 @@ installgithubrepos() {
     'Greenwolf/social_mapper'
     'Hackplayers/evil-winrm'
     'IOActive/jdwp-shellifier'
+    'OWASP/CheatSheetSeries'
     'PowerShellMafia/PowerSploit'
     'SecWiki/windows-kernel-exploits'
     'SecureAuthCorp/impacket'
