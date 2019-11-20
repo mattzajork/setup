@@ -208,6 +208,7 @@ downloadida() {
 installpythonpackages() {
   echo -e "${GREEN}[+] installing python packages${NC}"
   pip3 install pwntools
+  pip install pwntools
 }
 
 getpspy() {
@@ -246,6 +247,10 @@ installshell() {
   fi
 }
 
+allowrootvlc() {
+  sed -i 's/geteuid/getppid/' /usr/bin/vlc
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
@@ -258,3 +263,4 @@ getpspy
 installwinnc
 installgithubrepos
 installpythonpackages
+allowrootvlc
