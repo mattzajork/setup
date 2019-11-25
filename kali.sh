@@ -251,6 +251,11 @@ allowrootvlc() {
   sed -i 's/geteuid/getppid/' /usr/bin/vlc
 }
 
+installscripts() {
+  cp $DIR/files/scripts/scan.sh /opt/scan.sh
+  chmod +x /opt/scan.sh
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
@@ -264,3 +269,4 @@ installwinnc
 installgithubrepos
 installpythonpackages
 allowrootvlc
+installscripts
