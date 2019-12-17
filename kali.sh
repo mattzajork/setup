@@ -88,6 +88,7 @@ installgithubrepos() {
     'samratashok/nishang'
     'sensepost/reGeorg'
     'swisskyrepo/PayloadsAllTheThings'
+    'carlospolop/privilege-escalation-awesome-scripts-suite'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
