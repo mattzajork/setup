@@ -73,7 +73,6 @@ installgithubrepos() {
     'Greenwolf/social_mapper'
     'Hackplayers/evil-winrm'
     'IOActive/jdwp-shellifier'
-    'OWASP/CheatSheetSeries'
     'PowerShellMafia/PowerSploit'
     'SecWiki/windows-kernel-exploits'
     'SecureAuthCorp/impacket'
@@ -86,9 +85,9 @@ installgithubrepos() {
     'rasta-mouse/Sherlock'
     'rebootuser/LinEnum'
     'samratashok/nishang'
-    'sensepost/reGeorg'
     'swisskyrepo/PayloadsAllTheThings'
     'carlospolop/privilege-escalation-awesome-scripts-suite'
+    'fox-it/mitm6'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
