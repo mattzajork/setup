@@ -53,19 +53,6 @@ EOF
   fi
 }
 
-installprotonvpn() {
-  checkfile "/usr/local/bin/protonvpn-cli"
-  if [[ $? == 0 ]]; then
-    echo -e "${GREEN}[+] installing protonvpn${NC}"
-    wget https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh -O /tmp/protonvpn-cli.sh
-    chmod +x /tmp/protonvpn-cli.sh
-    /tmp/protonvpn-cli.sh --install
-    rm /tmp/protonvpn-cli.sh
-  else
-    echo -e "${LIGHT_BLUE}[=] protonvpn already installed, skipping${NC}"
-  fi
-}
-
 installgithubrepos() {
   github_repos=(
     'BloodHoundAD/BloodHound'
@@ -207,6 +194,7 @@ downloadida() {
 
 installpythonpackages() {
   echo -e "${GREEN}[+] installing python packages${NC}"
+  pip3 install protonvpn-cli
   pip3 install pwntools
   pip install pwntools
 }
@@ -260,7 +248,6 @@ removeunusedpackages
 installaptpackages
 installdotfiles
 installdirsearch
-installprotonvpn
 installaquatone
 installamass
 getchisel
