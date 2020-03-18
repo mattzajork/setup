@@ -59,6 +59,9 @@ installgithubrepos() {
     'fox-it/mitm6'
     'blechschmidt/massdns'
     'FortyNorthSecurity/EyeWitness'
+    'assetnote/commonspeak2-wordlists'
+    'ProjectAnte/dnsgen'
+    'Abss0x7tbh/bass'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
