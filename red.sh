@@ -1,4 +1,5 @@
 #!/bin/bash
+# setup script for pentesting and ctf tools
 if [ "$EUID" -ne 0 ]
   then echo "Run this script as root. Exiting."
   exit 0
@@ -21,44 +22,23 @@ installdotfiles() {
   fi
 }
 
-installdirsearch() {
-  if [[ ! -e /usr/local/bin/dirsearch ]]; then
-    echo -e "${GREEN}[+] installing dirsearch${NC}"
-    cat > /usr/local/bin/dirsearch <<EOF
-#!/bin/bash
-cd /opt/dirsearch
-python3 dirsearch.py \$@
-EOF
-    chmod +x /usr/local/bin/dirsearch
-  else
-    echo -e "${LIGHT_BLUE}[=] dirsearch already installed, skipping${NC}"
-  fi
-}
-
 installgithubrepos() {
   github_repos=(
     'BloodHoundAD/BloodHound'
     'Ganapati/RsaCtfTool'
-    'Greenwolf/social_mapper'
     'Hackplayers/evil-winrm'
-    'IOActive/jdwp-shellifier'
     'PowerShellMafia/PowerSploit'
-    'SecWiki/windows-kernel-exploits'
     'SecureAuthCorp/impacket'
     'bitsadmin/wesng'
     'danielmiessler/SecLists'
-    'flozz/p0wny-shell'
     'maurosoria/dirsearch'
-    'mthbernardes/rsg'
     'pwntester/ysoserial.net'
-    'rasta-mouse/Sherlock'
     'rebootuser/LinEnum'
     'samratashok/nishang'
     'swisskyrepo/PayloadsAllTheThings'
     'carlospolop/privilege-escalation-awesome-scripts-suite'
     'fox-it/mitm6'
     'blechschmidt/massdns'
-    'FortyNorthSecurity/EyeWitness'
     'assetnote/commonspeak2-wordlists'
     'ProjectAnte/dnsgen'
     'Abss0x7tbh/bass'
@@ -68,17 +48,27 @@ installgithubrepos() {
     [[ $i =~ /([\.a-zA-Z0-9_\-]+)$ ]]
     dir=${BASH_REMATCH[1]}
     echo -e "${GREEN}[+] checking repository $dir${NC}"
-    if [[ -e "/opt/$dir" ]]; then 
-      cd /opt/$dir && git pull; 
-    else 
-      cd /opt && git clone "https://github.com/$i.git"; 
+    if [[ -e "/opt/$dir" ]]; then
+      cd /opt/$dir && git pull;
+    else
+      cd /opt && git clone "https://github.com/$i.git";
     fi
+  done
+}
+
+installpipxpackages() {
+  git_repos=(
+    'https://github.com/fox-it/mitm6.git'
+  )
+  echo -e "${GREEN}[+] installing pipx packages $dir${NC}"
+  for i in ${git_repos[@]}; do
+    echo $i
   done
 }
 
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
-  apt install -y clamav dialog hping3 ipcalc macchanger p7zip python-pip python3-pip silversearcher-ag \
+  apt install -y dialog hping3 ipcalc macchanger p7zip python-pip python3-pip htop ripgrep\
     strace tree vim vlc xclip xfonts-terminus rlwrap imagemagick default-jdk cmake forensics-extra gdb edb-debugger gdbserver
 }
 
@@ -88,7 +78,7 @@ removeunusedpackages() {
 }
 
 getchisel() {
-  chisel_version='1.3.1'
+  chisel_version='1.7.6'
   if [[ ! -d /opt/chisel ]]; then
     echo -e "${GREEN}[+] installing chisel${NC}"
     mkdir /opt/chisel
@@ -96,7 +86,7 @@ getchisel() {
     echo -e "${LIGHT_BLUE}[=] chisel already installed, skipping${NC}"
   fi
 
-  for arch in linux_amd64 linux_386 windows_amd64.exe windows_386.exe; do
+  for arch in linux_amd64 linux_386 windows_amd64 windows_386; do
     if [[ ! -e "/opt/chisel/chisel_${arch}" ]]; then
       wget https://github.com/jpillora/chisel/releases/download/$chisel_version/chisel_$arch.gz -O /opt/chisel/chisel_$arch.gz
       gunzip /opt/chisel/chisel_$arch.gz
@@ -108,7 +98,7 @@ getchisel() {
 installamass() {
   if [[ ! -e /usr/local/bin/amass ]]; then
     echo -e "${GREEN}[+] installing amass${NC}"
-    amass_version=3.1.10
+    amass_version=3.11.13
     amass_file="amass_v${amass_version}_linux_amd64.zip"
     wget https://github.com/OWASP/Amass/releases/download/v$amass_version/$amass_file -O /tmp/$amass_file
     cd /tmp && unzip -u $amass_file
@@ -156,7 +146,7 @@ installghidra() {
   fi
   if [[ ! -e /opt/ghidra/ghidraRun ]]; then
     echo -e "${GREEN}[+] installing ghidra${NC}"
-    wget https://ghidra-sre.org/https://ghidra-sre.org/ghidra_9.1.2_PUBLIC_20200212.zip -O /opt/ghidra.zip
+    wget https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip -O /opt/ghidra.zip
   else
     echo -e "${LIGHT_BLUE}[=] ghidra already installed, skipping${NC}"
   fi
@@ -174,7 +164,6 @@ downloadida() {
 
 installpythonpackages() {
   echo -e "${GREEN}[+] installing python packages${NC}"
-  pip3 install --quiet protonvpn-cli
   pip3 install --quiet pwntools
   pip install --quiet pwntools
 }
@@ -199,15 +188,6 @@ getpspy() {
   fi
 }
 
-allowrootvlc() {
-  sed -i 's/geteuid/getppid/' /usr/bin/vlc
-}
-
-installscripts() {
-  cp $DIR/files/scripts/scan.sh /opt/scan.sh
-  chmod +x /opt/scan.sh
-}
-
 getjhaddixlists() {
   if [[ ! -e /opt/dns-all.txt ]]; then
     echo -e "${GREEN}[+] installing dns-all.txt${NC}"
@@ -226,7 +206,7 @@ getjhaddixlists() {
 getjythonstandalone() {
   if [[ ! -e /opt/jython-standalone.jar ]]; then
     echo -e "${GREEN}[+] installing jython-standalone${NC}"
-    wget http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.1/jython-standalone-2.7.1.jar -O /opt/jython-standalone.jar
+    wget https://repo1.maven.org/maven2/org/python/jython-standalone/2.7.2/jython-standalone-2.7.2.jar -O /opt/jython-standalone.jar
   else
     echo -e "${LIGHT_BLUE}[=] jython-standalone already installed, skipping${NC}"
   fi
@@ -249,7 +229,7 @@ installgo() {
     echo -e "${LIGHT_BLUE}[=] go already installed, skipping${NC}"
   else
     echo -e "${GREEN}[+] installing go${NC}"
-    wget https://dl.google.com/go/go1.14.linux-amd64.tar.gz -O /tmp/golang.tar.gz
+    wget https://golang.org/dl/go1.16.3.linux-amd64.tar.gz -O /tmp/golang.tar.gz
     tar -C /usr/local -xzf /tmp/golang.tar.gz
     rm /tmp/golang.tar.gz
     mkdir /root/go-workspace
@@ -274,10 +254,23 @@ installffuf() {
   fi
 }
 
+installzap() {
+  url='https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2.10.0_Crossplatform.zip'
+  wget ${url} -O /tmp/zap.zip
+  cd /tmp/ && unzip zap.zip
+  rm /tmp/zap.zip
+  mv ./ZAP_* /opt/ZAP
+}
+
+install gef() {
+  wget -O ~/.gdbinit-gef.py -q https://github.com/hugsy/gef/raw/master/gef.py
+  echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+}
+
 removeunusedpackages
 installaptpackages
 installdotfiles
-installdirsearch
+installgithubrepos
 installaquatone
 installamass
 installgo
@@ -289,7 +282,4 @@ getjhaddixlists
 installwaybackurls
 installffuf
 buildandinstallmassdns
-installgithubrepos
-installpythonpackages
-allowrootvlc
-installscripts
+installzap
