@@ -66,7 +66,8 @@ nuclei -update-templates
 tee /usr/local/bin/bbscan << EOF
 #!/bin/bash
 read -p "Enter the TLD: " TARGET 
-amass enum -max-dns-queries 8000 -d \$TARGET -o /tmp/domains
+#amass enum -max-dns-queries 8000 -d \$TARGET -o /tmp/domains
+subfinder -d \$TARGET -o /tmp/domains
 cat /tmp/domains | httpx -silent -threads 200 -ports 80,81,443,4443,8009,8080,8081,8090,8180,8443 > /tmp/urls; 
 nuclei -H "X-Security-Research: hackerone/bugcrowd" -l /tmp/urls -t /root/nuclei-templates/technologies/tech-detect.yaml
 nuclei -H "X-Security-Research: hackerone/bugcrowd" -l /tmp/urls \$(grep -r "severity: low\|severity: medium" /root/nuclei-templates | awk -F':' '{print "-t " \$1 " "}' | tr -d '\n')
