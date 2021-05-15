@@ -90,3 +90,4 @@ installbinaries
 
 echo 'export PATH=/usr/local/bin/bbbinaries:$PATH' > ~/.bashrc.local
 nuclei -update-templates
+cd /opt/OneForAll && pip3 install -r requirements
