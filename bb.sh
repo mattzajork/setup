@@ -25,7 +25,6 @@ installdotfiles() {
 installgithubrepos() {
   github_repos=(
     'danielmiessler/SecLists'
-    'assetnote/commonspeak2-wordlists'
     'shmilylty/OneForAll'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
@@ -53,7 +52,7 @@ installpipxpackages() {
 
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
-  apt install -y ipcalc p7zip-full python-pip python3-pip htop ripgrep strace tree vim xclip xfonts-terminus rlwrap
+  apt install -y ipcalc p7zip-full python-pip python3-pip htop ripgrep tree vim rlwrap jq
 }
 
 removeunusedpackages() {
@@ -90,4 +89,17 @@ installbinaries
 
 echo 'export PATH=/usr/local/bin/bbbinaries:$PATH' > ~/.bashrc.local
 nuclei -update-templates
-cd /opt/OneForAll && pip3 install -r requirements
+cd /opt/OneForAll && pip3 install -r requirements.txt
+
+tee /usr/local/bin/bbscan << EOF
+#!/bin/bash
+read -p "Enter the TLD: " TARGET 
+cd /opt/OneForAll
+python3 oneforall.py --target \$TARGET --takeover True run
+cat results/\$TARGET.csv | cut -d ',' -f6 | httpx -silent -threads 200 -ports 80,81,443,4443,8009,8080,8081,8090,8180,8443 > /tmp/urls; 
+nuclei -H "X-HackerOne-Research: hackerone" -l /tmp/urls -t /root/nuclei-templates/technologies/tech-detect.yaml
+nuclei -H "X-HackerOne-Research: hackerone" -l /tmp/urls \$(grep -r "severity: low\|severity: medium" /root/nuclei-templates | awk -F':' '{print "-t " $1 " "}' | tr -d '\n')
+echo "scan \$(wc -l /tmp/urls) URLs complete"
+EOF
+
+chmod +x /usr/local/bin/bbscan
