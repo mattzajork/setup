@@ -26,6 +26,7 @@ installgithubrepos() {
   github_repos=(
     'danielmiessler/SecLists'
     'assetnote/commonspeak2-wordlists'
+    'shmilylty/OneForAll'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
@@ -86,3 +87,6 @@ installdotfiles
 installgithubrepos
 getjhaddixlists
 installbinaries
+
+echo 'export PATH=/usr/local/bin/bbbinaries:$PATH' > ~/.bashrc.local
+nuclei -update-templates
