@@ -41,7 +41,7 @@ installgithubrepos() {
 
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
-  apt install -y ipcalc p7zip-full python-pip python3-pip htop ripgrep tree vim rlwrap jq
+  apt install -y ipcalc tmux p7zip-full python-pip python3-pip htop ripgrep tree vim rlwrap jq
 }
 
 removeunusedpackages() {
