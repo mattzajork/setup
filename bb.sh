@@ -52,7 +52,7 @@ removeunusedpackages() {
 
 installbinaries() {
   cd /usr/local/bin/
-  git clone https://github.com/mattzajork/bbbinaries.git ./
+  git clone https://github.com/mattzajork/bbbinaries.git
 }
 
 removeunusedpackages
