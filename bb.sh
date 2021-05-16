@@ -42,7 +42,7 @@ installgithubrepos() {
 
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
-  apt install -y nmap tmux p7zip-full python-pip python3-pip htop ripgrep tree vim jq
+  apt install -y nmap tmux p7zip-full python-pip python3-pip htop ripgrep tree vim jq dnsutils
 }
 
 removeunusedpackages() {
@@ -63,6 +63,12 @@ installbinaries
 
 echo 'export PATH=/usr/local/bin/bbbinaries:$PATH' > ~/.bashrc.local
 nuclei -update-templates
+
+cd /tmp/
+git clone https://github.com/blechschmidt/massdns.git
+cd ./massdns
+make
+cp ./bin/massdns /usr/local/bin/massdns
 
 tee /usr/local/bin/bbscan << EOF
 #!/bin/bash
