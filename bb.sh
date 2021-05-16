@@ -25,6 +25,7 @@ installdotfiles() {
 installgithubrepos() {
   github_repos=(
     'danielmiessler/SecLists'
+    'sa7mon/S3Scanner'
   )
   echo -e "${LIGHT_BLUE}Checking GitHub Repos... ${NC}"
   for i in ${github_repos[@]}; do
@@ -41,7 +42,7 @@ installgithubrepos() {
 
 installaptpackages() {
   echo -e "${GREEN}[+] installing apt packages${NC}"
-  apt install -y ipcalc tmux p7zip-full python-pip python3-pip htop ripgrep tree vim rlwrap jq
+  apt install -y nmap tmux p7zip-full python-pip python3-pip htop ripgrep tree vim jq
 }
 
 removeunusedpackages() {
@@ -67,9 +68,12 @@ tee /usr/local/bin/bbscan << EOF
 #!/bin/bash
 read -p "Enter the TLD: " TARGET 
 #amass enum -max-dns-queries 8000 -d \$TARGET -o /tmp/domains
-subfinder -d \$TARGET -o /tmp/domains
+assetfinder \$TARGET | tee /tmp/domains.assetfinder
+subfinder -d \$TARGET -o /tmp/domains.subfinder
+cat /tmp/domains.assetfinder /tmp/domains.subfinder | sort -u > /tmp/domains
 cat /tmp/domains | httpx -silent -threads 200 -ports 80,81,443,4443,8009,8080,8081,8090,8180,8443 > /tmp/urls; 
 nuclei -H "X-Security-Research: hackerone/bugcrowd" -l /tmp/urls -t /root/nuclei-templates/technologies/tech-detect.yaml
+nuclei -H "X-Security-Research: hackerone/bugcrowd" -l /tmp/urls -t /root/nuclei-templates/exposures/apis/swagger.yaml
 nuclei -H "X-Security-Research: hackerone/bugcrowd" -l /tmp/urls \$(grep -r "severity: low\|severity: medium" /root/nuclei-templates | awk -F':' '{print "-t " \$1 " "}' | tr -d '\n')
 echo "scan \$(wc -l /tmp/urls) URLs complete"
 EOF
